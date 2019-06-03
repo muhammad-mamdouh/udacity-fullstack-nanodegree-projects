@@ -30,19 +30,22 @@ QUERY_DAYS_WITH_HIGH_ERRORS = """
         not_ok_req.day = all_req.day
       AND
         ROUND
-         ( ((not_ok_req.request_count / all_req.request_count) * 100)::DEC, 2 ) > 1.0
+         ( ((not_ok_req.request_count / all_req.request_count) * 100)::DEC, 2 )
+            > 1.0
     ORDER BY error_req_ratio DESC;
 """
 
+
 def run_query(query):
     """ Template function for running any query and returning the results. """
-    db  = psycopg2.connect(database=DATABASE_NAME)
+    db = psycopg2.connect(database=DATABASE_NAME)
     cursor = db.cursor()
     for q in query:
         cursor.execute(q)
     result = cursor.fetchall()
     db.close()
     return result
+
 
 def get_top_three_articles():
     """ Return the top three viewed articles. """
@@ -52,6 +55,7 @@ def get_top_three_articles():
                         QUERY_THREE_MOST_POPULAR_ARTICLES
                     ])
 
+
 def get_top_four_authors():
     """ Return the top four authors by their articles view count. """
     return run_query([
@@ -59,6 +63,7 @@ def get_top_four_authors():
                         newsViewTables.VIEW_FOUR_MOST_POPULAR_AUTHORS,
                         QUERY_FOUR_MOST_POPULAR_AUTHORS
                     ])
+
 
 def get_days_with_highest_error_rates():
     """ Return the days with error rates > 1.0 of the total requests. """
