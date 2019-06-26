@@ -7,25 +7,11 @@ from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Post
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
-posts = [
-    {
-        'author': 'Mohamed Mamdouh',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'May 18, 2019'
-    },
-    {
-        'author': 'Tarek Mamdouh',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'May 05, 2018'
-    }
-]
-
 
 @app.route("/")
 @app.route("/home")
 def home():
+    posts = Post.query.all()
     return render_template('home.html', posts=posts)
 
 
