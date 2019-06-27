@@ -5,6 +5,7 @@ the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-st
 
 ## Projects
 1. [Logs Analysis](Project1/)
+2. [Flask Blog](Project2/)
 
 ## License
 These projects are under [The Unlicense License](UNLICENSE.md).
