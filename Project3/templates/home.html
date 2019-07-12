@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for item in items %}
+        <h2>{{ item.title }}</h2>
+        {{ item.author }}
+        {{ item.description }}
+        {{ item.category }}
+        {{ item.date_published }}
+    {% endfor %}
+{% endblock content %}
