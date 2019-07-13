@@ -1,9 +1,8 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
-import secrets
+from flask import render_template, url_for, flash, redirect
+from itemcatalog import app
+from itemcatalog.forms import RegistrationForm, LoginForm
+from itemcatalog.models import User, Category, Item
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 items = [
     {
@@ -53,8 +52,3 @@ def login():
         else:
             flash('Login Unsuccessful. Please check your username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
-
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run('', 8000)
