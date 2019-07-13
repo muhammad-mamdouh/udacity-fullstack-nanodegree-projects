@@ -1,10 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
     {% for item in items %}
-        <h2>{{ item.title }}</h2>
-        {{ item.author }}
-        {{ item.description }}
-        {{ item.category }}
-        {{ item.date_published }}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="catalogitem-metadata">
+              <a class="mr-2" href="#">{{ item.author }}</a>
+              <small class="text-muted">{{ item.date_published }}</small>
+            </div>
+            <h2><a class="catalogitem-title" href="#">{{ item.title }}</a></h2>
+            <p class="catalogitem-content">{{ item.description }}</p>
+            <a href="#" class="badge badge-info">Category 1</a>
+            <a href="#" class="badge badge-info">Category 2</a>
+          </div>
+        </article>
     {% endfor %}
 {% endblock content %}
