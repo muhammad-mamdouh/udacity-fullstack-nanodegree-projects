@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from itemcatalog import app, db, bcrypt
-from itemcatalog.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from itemcatalog.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
+                               CategoryForm, ItemForm)
 from itemcatalog.models import User, Category, Item
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -101,3 +102,22 @@ def account():
         form.email.data = current_user.email
     image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     return render_template('account.html', title='Account', image_file=image_file, form=form)
+
+
+@app.route('/categories/new', methods=['GET', 'POST'])
+@login_required
+def new_category():
+    form = CategoryForm()
+    if form.validate_on_submit():
+        category = Category(name=form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        flash('Category has been added successfully!', 'success')
+        return redirect(url_for('show_categories'))
+    return render_template('create_category.html', title='New Category', form=form)
+
+
+@app.route('/categories')
+def show_categories():
+    categories = Category.query.all()
+    return render_template('show_categories.html', title='All Categories', categories=categories)
