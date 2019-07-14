@@ -3,11 +3,13 @@
     {% for category in categories %}
         <div class="card border-primary text-dark bg-light mb-3">
             <div class="card-header border-primary">
-                {{ category.name }}
+                {{ category.name.capitalize() }} Category
             </div>
             <div class="card-body">
-                <a href="#" class="btn btn-dark text-light">Edit {{ category.name }}</a>
-                <a href="#" class="btn btn-dark text-light">{{ category.name }} Items</a>
+                <a href="{{ url_for('category_items', category_id=category.id) }}"
+                   class="btn btn-dark text-light">
+                    {{ category.name.capitalize() }} Items
+                </a>
             </div>
         </div>
     {% endfor %}
