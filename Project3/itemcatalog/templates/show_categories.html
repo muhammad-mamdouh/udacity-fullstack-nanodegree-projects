@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for category in categories %}
+        <div class="card border-primary text-dark bg-light mb-3">
+            <div class="card-header border-primary">
+                {{ category.name }}
+            </div>
+            <div class="card-body">
+                <a href="#" class="btn btn-dark text-light">Edit {{ category.name }}</a>
+                <a href="#" class="btn btn-dark text-light">{{ category.name }} Items</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
