@@ -150,6 +150,19 @@ def edit_item(category_id, item_id):
                            category=category, item=item, form=form, legend='Update Item')
 
 
+@app.route('/categories/<int:category_id>/items/<int:item_id>/delete', methods=['POST'])
+@login_required
+def delete_item(category_id, item_id):
+    category = Category.query.get_or_404(category_id)
+    item = Item.query.get_or_404(item_id)
+    if item.item_author != current_user:
+        abort(403)
+    db.session.delete(item)
+    db.session.commit()
+    flash('Your item has been deleted successfully!', 'success')
+    return redirect(url_for('home'))
+
+
 @app.route('/categories/<int:category_id>/items')
 def category_items(category_id):
     category = Category.query.filter_by(id=category_id).one()
