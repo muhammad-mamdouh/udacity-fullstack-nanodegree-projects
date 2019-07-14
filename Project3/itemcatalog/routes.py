@@ -8,27 +8,10 @@ import secrets
 import os
 
 
-items = [
-    {
-        'author': 'Mohamed Mamdouh',
-        'title': 'Snowboard',
-        'description': 'Description for the first item.',
-        'category': 'Soccer',
-        'date_published': 'May 18, 2019'
-    },
-    {
-        'author': 'Tarek Mamdouh',
-        'title': 'Stick',
-        'description': 'Description for the second item.',
-        'category': 'Hockey',
-        'date_published': 'May 05, 2019'
-    }
-]
-
-
 @app.route('/')
 @app.route('/home')
 def home():
+    items = Item.query.all()
     return render_template('home.html', items=items)
 
 
@@ -121,3 +104,18 @@ def new_category():
 def show_categories():
     categories = Category.query.all()
     return render_template('show_categories.html', title='All Categories', categories=categories)
+
+
+@app.route('/categories/<int:category_id>/items/new', methods=['GET', 'POST'])
+@login_required
+def new_item(category_id):
+    category = Category.query.filter_by(id=category_id).one()
+    form = ItemForm()
+    if form.validate_on_submit():
+        item = Item(name=form.name.data, description=form.description.data,
+                    item_author=current_user, item_category=category)
+        db.session.add(item)
+        db.session.commit()
+        flash('Item has been added successfully!', 'success')
+        return redirect(url_for('show_categories'))
+    return render_template('create_item.html', title='New Category', form=form, category=category)
