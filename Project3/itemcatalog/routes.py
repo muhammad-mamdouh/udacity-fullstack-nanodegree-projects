@@ -118,7 +118,7 @@ def new_item(category_id):
         db.session.commit()
         flash('Item has been added successfully!', 'success')
         return redirect(url_for('category_items', category_id=category_id))
-    return render_template('create_item.html', title='New Category',
+    return render_template('create_edit_item.html', title='New Category',
                            form=form, category=category, legend='New Item')
 
 
@@ -146,7 +146,7 @@ def edit_item(category_id, item_id):
     elif request.method == 'GET':
         form.name.data = item.name
         form.description.data = item.description
-    return render_template('create_item.html', title=f'Edit {item.name}',
+    return render_template('create_edit_item.html', title=f'Edit {item.name}',
                            category=category, item=item, form=form, legend='Update Item')
 
 
