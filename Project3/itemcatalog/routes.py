@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from itemcatalog import app, db, bcrypt
 from itemcatalog.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                CategoryForm, ItemForm)
@@ -11,7 +11,7 @@ import os
 @app.route('/')
 @app.route('/home')
 def home():
-    items = Item.query.all()
+    items = Item.query.order_by(Item.date_published.desc()).all()
     return render_template('home.html', items=items)
 
 
@@ -117,8 +117,9 @@ def new_item(category_id):
         db.session.add(item)
         db.session.commit()
         flash('Item has been added successfully!', 'success')
-        return redirect(url_for('show_categories'))
-    return render_template('create_item.html', title='New Category', form=form, category=category)
+        return redirect(url_for('category_items', category_id=category_id))
+    return render_template('create_item.html', title='New Category',
+                           form=form, category=category, legend='New Item')
 
 
 @app.route('/categories/<int:category_id>/items/<int:item_id>')
@@ -126,3 +127,24 @@ def item(category_id, item_id):
     category = Category.query.get_or_404(category_id)
     item = Item.query.get_or_404(item_id)
     return render_template('item.html', title=item.name, category=category, item=item)
+
+
+@app.route('/items/JSON')
+def categories_json():
+    """Return JSON for all of the categories"""
+    items = Item.query.all()
+    return jsonify(items=[i.serialize for i in items])
+
+
+@app.route('/categories/<int:category_id>/items/JSON')
+def category_items_json(category_id):
+    """Return JSON for all of the items of a specific category"""
+    category_items = Item.query.filter_by(category_id=category_id).all()
+    return jsonify(category_items=[i.serialize for i in category_items])
+
+
+@app.route('/categories/JSON')
+def items_json():
+    """Return JSON for all of the items"""
+    categories = Category.query.all()
+    return jsonify(categories=[i.serialize for i in categories])
