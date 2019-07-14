@@ -56,3 +56,9 @@ class UpdateAccountForm(FlaskForm):
 class CategoryForm(FlaskForm):
     name = StringField('Category Name', validators=[DataRequired()])
     submit = SubmitField('Add Category')
+
+
+class ItemForm(FlaskForm):
+    name = StringField('Item Name', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Add Item')
