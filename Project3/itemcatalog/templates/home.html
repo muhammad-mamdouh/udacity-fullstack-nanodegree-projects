@@ -1,16 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
+      {% if category_id %}
+        <div class="card text-center mb-3">
+            <div class="card-header">
+                  <h3>{{ category.name }} Category</h3>
+              </div>
+              <div class="card-body">
+                {% if current_user.is_authenticated %}
+                  <a href="{{ url_for('new_item', category_id=category.id) }}"
+                     class="btn btn-primary">Add new item</a>
+                {% else %}
+                  Login to publish your own ones
+                {% endif %}
+              </div>
+              <div class="card-footer text-muted">
+                Latest Updated At: {{ last_item.date_published.strftime('%Y-%m-%d') }}
+              </div>
+        </div>
+    {% endif %}
     {% for item in items %}
         <article class="media content-section">
+          <img class="rounded-circle catalogitem-img"
+               src="{{ url_for('static', filename='profile_pics/' + item.item_author.image_file) }}">
           <div class="media-body">
             <div class="catalogitem-metadata">
-              <a class="mr-2" href="#">{{ item.author }}</a>
-              <small class="text-muted">{{ item.date_published }}</small>
+              <a class="mr-2" href="#">{{ item.item_author.username }}</a>
+              <small class="text-muted">{{ item.date_published.strftime('%Y-%m-%d') }}</small>
             </div>
-            <h2><a class="catalogitem-title" href="#">{{ item.title }}</a></h2>
+            <h2><a class="catalogitem-title" href="{{ url_for('item', category_id=item.item_category.id, item_id=item.id) }}">{{ item.name }}</a></h2>
             <p class="catalogitem-content">{{ item.description }}</p>
-            <a href="#" class="badge badge-info">Category 1</a>
-            <a href="#" class="badge badge-info">Category 2</a>
+            <h5><a href="{{ url_for('category_items', category_id=item.item_category.id) }}" class="badge badge-dark">{{ item.item_category.name }}</a></h5>
           </div>
         </article>
     {% endfor %}

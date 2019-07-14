@@ -129,6 +129,15 @@ def item(category_id, item_id):
     return render_template('item.html', title=item.name, category=category, item=item)
 
 
+@app.route('/categories/<int:category_id>/items')
+def category_items(category_id):
+    category = Category.query.filter_by(id=category_id).one()
+    items = Item.query.filter_by(category_id=category_id).order_by(Item.date_published.desc()).all()
+    last_item = Item.query.filter_by(category_id=category_id).order_by(Item.date_published.desc()).first()
+    return render_template('home.html', items=items,
+                           category_id=category_id, category=category, last_item=last_item)
+
+
 @app.route('/items/JSON')
 def categories_json():
     """Return JSON for all of the categories"""
