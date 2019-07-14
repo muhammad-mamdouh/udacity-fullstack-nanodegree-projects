@@ -129,6 +129,27 @@ def item(category_id, item_id):
     return render_template('item.html', title=item.name, category=category, item=item)
 
 
+@app.route('/categories/<int:category_id>/items/<int:item_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_item(category_id, item_id):
+    category = Category.query.get_or_404(category_id)
+    item = Item.query.get_or_404(item_id)
+    if item.item_author != current_user:
+        abort(403)
+    form = ItemForm()
+    if form.validate_on_submit():
+        item.name = form.name.data
+        item.description = form.description.data
+        db.session.commit()
+        flash('Your item has been updated!', 'success')
+        return redirect(url_for('item', category_id=category.id, item_id=item.id))
+    elif request.method == 'GET':
+        form.name.data = item.name
+        form.description.data = item.description
+    return render_template('create_item.html', title=f'Edit {item.name}',
+                           category=category, item=item, form=form, legend='Update Item')
+
+
 @app.route('/categories/<int:category_id>/items')
 def category_items(category_id):
     category = Category.query.filter_by(id=category_id).one()
