@@ -119,3 +119,10 @@ def new_item(category_id):
         flash('Item has been added successfully!', 'success')
         return redirect(url_for('show_categories'))
     return render_template('create_item.html', title='New Category', form=form, category=category)
+
+
+@app.route('/categories/<int:category_id>/items/<int:item_id>')
+def item(category_id, item_id):
+    category = Category.query.get_or_404(category_id)
+    item = Item.query.get_or_404(item_id)
+    return render_template('item.html', title=item.name, category=category, item=item)
