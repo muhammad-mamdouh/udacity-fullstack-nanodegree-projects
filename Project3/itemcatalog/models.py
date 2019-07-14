@@ -30,6 +30,14 @@ class Category(db.Model):
     def __repr__(self):
         return f"Category('{self.name}')"
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+
 
 class Item(db.Model):
     __tablename__ = 'item'
@@ -42,3 +50,14 @@ class Item(db.Model):
 
     def __repr__(self):
         return f"Item('{self.name}, {self.date_published}, {self.item_author.username}, {self.item_category.name}')"
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'category_id': self.item_category.id,
+            'item_author': self.item_author.username,
+            'name': self.name,
+            'description': self.description
+        }
