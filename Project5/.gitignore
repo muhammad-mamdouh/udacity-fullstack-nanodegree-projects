@@ -1,0 +1,5 @@
+venv
+django_project/django_project/__pycache__
+django_project/blog/__pycache__
+django_project/blog/migrations/__pycache__
+django_project/db.sqlite3
