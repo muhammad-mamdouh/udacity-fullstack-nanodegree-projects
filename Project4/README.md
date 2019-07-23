@@ -102,29 +102,29 @@ Activate the python virtual environment by running ```~project_dir$ source venv/
 ```pip install gunicorn```
 
 ###### Setting up Nginx and Gunicorn
-    1. Running Nginx
-    Run ```sudo rm /etc/nginx/sites-enables/default```
-    and open ```sudo nano /etc/nginx/sites-enables/choosed-project-name``` and paste
-    ```
-    server {
-        listen 80;
-        server_name YOUR_IP_OR_DOMAIN;
-    
-        location /static {
-            alias /home/YOUR_USER/YOUR_PROJECT/flaskblog/static;
-        }
-    
-        location / {
-            proxy_pass http://localhost:8000;
-            include /etc/nginx/proxy_params;
-            proxy_redirect off;
-        }
+* Running Nginx
+Run ```sudo rm /etc/nginx/sites-enables/default```
+and open ```sudo nano /etc/nginx/sites-enables/choosed-project-name``` and paste
+```
+server {
+    listen 80;
+    server_name YOUR_IP_OR_DOMAIN;
+
+    location /static {
+        alias /home/YOUR_USER/YOUR_PROJECT/flaskblog/static;
     }
-    ```
-    after that restart nginx by running ```sudo systemctl restart nginx```
-    
-    2. Running Gunicorn
-    Run ```gunicorn -w <INT:THE_AMOUNT_OF_WORKERS> APP_FILE:APP_VAR_NAME```
+
+    location / {
+        proxy_pass http://localhost:8000;
+        include /etc/nginx/proxy_params;
+        proxy_redirect off;
+    }
+}
+```
+after that restart nginx by running ```sudo systemctl restart nginx```
+
+* Running Gunicorn
+Run ```gunicorn -w <INT:THE_AMOUNT_OF_WORKERS> APP_FILE:APP_VAR_NAME```
 
 ##### 5. Use Supervisor
 Install it at first ```sudo apt install supervisor``` after that you have to configure supervisor by opening ```sudo nano /etc/supervisor/conf.d/CHOSEN_APP_NAME.conf```
