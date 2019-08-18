@@ -8,7 +8,8 @@ the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-st
 2. [Flask Blog](Project2/)
 3. [Item Catalog Application](Project3/)
 4. [Linux Server Configuration](Project4/)
-5. [Django Blog](Project5/)
+5. [Find-restaurant ApiMashup using Foursquare API](https://github.com/muhammad-mamdouh/udacity-fullstack-tools/tree/master/APIs/2_ApiMashup)
+6. [Django Blog](Project5/)
 
 
 ## Certificate
